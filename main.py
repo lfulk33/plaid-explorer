@@ -1,3 +1,4 @@
-import config
+from auth import get_plaid_client
 
-print(config.get_config())
+client = get_plaid_client()
+print(client)

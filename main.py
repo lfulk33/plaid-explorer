@@ -1,4 +1,5 @@
-from auth import get_plaid_client
+from auth import get_plaid_client, create_link_token
 
 client = get_plaid_client()
-print(client)
+token = create_link_token(client)
+print(token)

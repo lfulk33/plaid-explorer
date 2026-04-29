@@ -5,6 +5,8 @@ from plaid.model.link_token_create_request import LinkTokenCreateRequest
 from plaid.model.link_token_create_request_user import LinkTokenCreateRequestUser
 from plaid.model.products import Products
 from plaid.model.country_code import CountryCode
+from plaid.model.sandbox_public_token_create_request import SandboxPublicTokenCreateRequest
+from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchangeRequest
 
 
 def get_plaid_client():
@@ -40,4 +42,23 @@ def create_link_token(client, client_name="Plaid Explorer", country_codes=[Count
         return response['link_token']
     except plaid.ApiException as e:
         print(f"Error creating link token: {e}")
+        return None
+
+def create_sandbox_public_token(client):
+    pt_request = SandboxPublicTokenCreateRequest(
+        institution_id="ins_109508",
+        initial_products=[Products('transactions')]
+    )
+    pt_response = client.sandbox_public_token_create(pt_request)
+    return pt_response['public_token']
+
+def exchange_public_token(client, public_token):
+    exchange_request = ItemPublicTokenExchangeRequest(public_token)
+    try:
+        # Perform the API call
+        exchange_response = client.item_public_token_exchange(exchange_request)
+        # The access_token returned
+        return exchange_response['access_token']
+    except plaid.ApiException as e:
+        print(f"Error exchanging for access token: {e}")
         return None

@@ -1,5 +1,6 @@
 from auth import get_plaid_client, create_link_token, create_sandbox_public_token, exchange_public_token
 from accounts import get_accounts
+from transactions import get_transactions
 
 client = get_plaid_client()
 token = create_link_token(client)
@@ -15,3 +16,14 @@ if accounts:
             print(f"{account['name']} | {account['type']} | Empty")
 else:
     print("There are no accounts listed")
+
+import time
+time.sleep(5)
+
+transactions = get_transactions(client, access_token, limit = 5)
+if transactions:
+    for transaction in transactions:
+        merchant = transaction['merchant_name'] or transaction['name']
+        print(f"{transaction['date']} | {merchant} | ${transaction['amount']:,.2f} | {transaction['personal_finance_category']['primary']}")
+else:
+    print("There are no transactions listed")

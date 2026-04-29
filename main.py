@@ -7,4 +7,7 @@ public_token = create_sandbox_public_token(client)
 access_token = exchange_public_token(client, public_token)
 accounts = get_accounts(client, access_token)
 for account in accounts:
-    print(f"{account['name']} | {account['type']} | ${account['balances']['current']:,.2f}")
+    if(account['balances']['current']):
+        print(f"{account['name']} | {account['type']} | ${account['balances']['current']:,.2f}")
+    else:
+        print(f"{account['name']} | {account['type']} | Empty}")

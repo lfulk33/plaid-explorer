@@ -6,8 +6,12 @@ token = create_link_token(client)
 public_token = create_sandbox_public_token(client)
 access_token = exchange_public_token(client, public_token)
 accounts = get_accounts(client, access_token)
-for account in accounts:
-    if(account['balances']['current']):
-        print(f"{account['name']} | {account['type']} | ${account['balances']['current']:,.2f}")
-    else:
-        print(f"{account['name']} | {account['type']} | Empty}")
+
+if accounts:
+    for account in accounts:
+        if(account['balances']['current']):
+            print(f"{account['name']} | {account['type']} | ${account['balances']['current']:,.2f}")
+        else:
+            print(f"{account['name']} | {account['type']} | Empty")
+else:
+    print("There are no accounts listed")

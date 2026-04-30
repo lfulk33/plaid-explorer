@@ -1,6 +1,7 @@
 from auth import get_plaid_client, create_link_token, create_sandbox_public_token, exchange_public_token
 from accounts import get_accounts
 from transactions import get_transactions
+from utils import format_currency, get_divider, format_date
 import time
 
 client = get_plaid_client()
@@ -21,9 +22,9 @@ accounts = get_accounts(client, access_token)
 if accounts:
     for account in accounts:
         if(account['balances']['current']):
-            print(f"{account['name']} | {account['type']} | ${account['balances']['current']:,.2f}")
+            print(f"{account['name']}{get_divider()}{account['type']}{get_divider()}{format_currency(account['balances']['current'])}")
         else:
-            print(f"{account['name']} | {account['type']} | Empty")
+            print(f"{account['name']}{get_divider()}{account['type']}{get_divider()}Empty")
 else:
     print("There are no accounts listed")
 
@@ -33,6 +34,6 @@ transactions = get_transactions(client, access_token, limit = 5)
 if transactions:
     for transaction in transactions:
         merchant = transaction['merchant_name'] or transaction['name']
-        print(f"{transaction['date']} | {merchant} | ${transaction['amount']:,.2f} | {transaction['personal_finance_category']['primary']}")
+        print(f"{format_date(transaction['date'])}{get_divider()}{merchant}{get_divider()}{format_currency(transaction['amount'])}{get_divider()}{transaction['personal_finance_category']['primary']}")
 else:
     print("There are no transactions listed")

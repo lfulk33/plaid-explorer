@@ -1,11 +1,21 @@
 from auth import get_plaid_client, create_link_token, create_sandbox_public_token, exchange_public_token
 from accounts import get_accounts
 from transactions import get_transactions
+import time
 
 client = get_plaid_client()
 token = create_link_token(client)
+if token is None:
+    print("Failed to create token. Exiting.")
+    exit()
 public_token = create_sandbox_public_token(client)
+if public_token is None:
+    print("Failed to create public token. Exiting.")
+    exit()
 access_token = exchange_public_token(client, public_token)
+if access_token is None:
+    print("Failed to exchange public token. Exiting.")
+    exit()
 accounts = get_accounts(client, access_token)
 
 if accounts:
@@ -17,7 +27,6 @@ if accounts:
 else:
     print("There are no accounts listed")
 
-import time
 time.sleep(5)
 
 transactions = get_transactions(client, access_token, limit = 5)

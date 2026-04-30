@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import plaid
+from utils import handle_plaid_error
 from plaid.model.transactions_get_request import TransactionsGetRequest
 from plaid.model.transactions_get_request_options import TransactionsGetRequestOptions
 
@@ -26,6 +27,11 @@ def get_transactions(client, access_token, days_back=30, limit=10):
         response = client.transactions_get(request)
         return response['transactions']
     except plaid.ApiException as e:
-        print(f"Error getting accounts: {e}")
+        handle_plaid_error(e)
         return None
+    except Exception as e:
+        # Network errors, timeouts, anything else
+        print(f"Network or unexpected error: {e}")
+        return None         
+
 

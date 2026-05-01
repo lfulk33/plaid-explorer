@@ -19,7 +19,7 @@ if access_token is None:
     exit()
 accounts = get_accounts(client, access_token)
 
-""" if accounts:
+if accounts:
     for account in accounts:
         if(account['balances']['current']):
             print(f"{account['name']}{get_divider()}{account['type']}{get_divider()}{format_currency(account['balances']['current'])}")
@@ -36,7 +36,7 @@ if transactions:
         merchant = transaction['merchant_name'] or transaction['name']
         print(f"{format_date(transaction['date'])}{get_divider()}{merchant}{get_divider()}{format_currency(transaction['amount'])}{get_divider()}{transaction['personal_finance_category']['primary']}")
 else:
-    print("There are no transactions listed") """
+    print("There are no transactions listed")
 
 account_health = get_account_health(accounts)
 print("===== ACCOUNT HEALTH SUMMARY =====")

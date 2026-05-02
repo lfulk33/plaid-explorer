@@ -1,6 +1,6 @@
 from auth import get_plaid_client, create_link_token, create_sandbox_public_token, exchange_public_token
 from accounts import get_accounts, get_account_health
-from transactions import get_transactions
+from transactions import get_transactions, analyze_transactions
 from utils import format_currency, get_divider, format_date
 import time
 
@@ -46,3 +46,13 @@ if (len(account_health['flagged']) > 0):
     print("Flagged: " + ', '.join([f"{name} ({format_currency(balance)}) - negative balance" for name, balance in account_health['flagged'].items()]))
 else:
     print("Flagged: None")
+
+print("===== TRANSACTION ANALYSIS =====")
+print("Top Spending Categories:")
+analyzed = analyze_transactions(transactions)
+x = 1
+for category, sum in analyzed['sum_by_cat']:
+    print(f"{x}. {category.replace('_', ' ').title():<20} {format_currency(sum):>10}")
+    x = x + 1
+print(f"Large transactions (over $100): {analyzed['trans_over_100']}")
+print(f"Total spend (30 days): {format_currency(analyzed['total_spend'])}")

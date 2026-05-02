@@ -34,4 +34,16 @@ def get_transactions(client, access_token, days_back=30, limit=10):
         print(f"Network or unexpected error: {e}")
         return None         
 
-
+#Groups by category, sums amounts, sorts descending. Returns top 3 categories, count over $100, total spend
+def analyze_transactions(transactions): 
+    sum_by_cat = {}
+    trans_over_100 = 0
+    total_spend = 0
+    for transaction in transactions:
+        sum_by_cat[str(transaction['personal_finance_category']['primary'])] = sum_by_cat.get(str(transaction['personal_finance_category']['primary']), 0) + transaction['amount']
+        if(transaction['amount'] > 100):
+            trans_over_100 += 1
+        total_spend += transaction['amount']
+    sorted_sum_by_cat = sorted(sum_by_cat.items(), key=lambda x: x[1], reverse=True)
+    
+    return {"sum_by_cat": sorted_sum_by_cat[:3], "trans_over_100": trans_over_100, "total_spend": total_spend}

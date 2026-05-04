@@ -3,6 +3,13 @@ from accounts import get_accounts, get_account_health
 from transactions import get_transactions, analyze_transactions
 from utils import format_currency, get_divider, format_date, save_report
 import time
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--days', type=int, default=30)
+parser.add_argument('--limit', type=int, default=10)
+parser.add_argument('--save', action='store_true')
+args = parser.parse_args()
 
 client = get_plaid_client()
 token = create_link_token(client)
@@ -30,7 +37,7 @@ else:
 
 time.sleep(5)
 
-transactions = get_transactions(client, access_token, limit = 5)
+transactions = get_transactions(client, access_token, args.days, args.limit)
 if transactions:
     for transaction in transactions:
         merchant = transaction['merchant_name'] or transaction['name']
@@ -57,5 +64,6 @@ for category, sum in analyzed['sum_by_cat']:
 print(f"Large transactions (over $100): {analyzed['trans_over_100']}")
 print(f"Total spend (30 days): {format_currency(analyzed['total_spend'])}")
 
-filename = save_report(account_health, analyzed)
-print(f"Report saved to {filename}")
+if (args.save):
+    filename = save_report(account_health, analyzed)
+    print(f"Report saved to {filename}")

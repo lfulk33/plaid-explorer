@@ -9,7 +9,7 @@ from plaid.model.country_code import CountryCode
 from plaid.model.sandbox_public_token_create_request import SandboxPublicTokenCreateRequest
 from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchangeRequest
 
-
+# Initializes and returns an authenticated Plaid API client using credentials from .env
 def get_plaid_client():
     env_map = {
         'sandbox': plaid.Environment.Sandbox,
@@ -35,8 +35,7 @@ def get_plaid_client():
         print(f"Network or unexpected error: {e}")
         return None         
 
-
-
+# Generates a link token used to initialize Plaid Link on the frontend
 def create_link_token(client, client_name="Plaid Explorer", country_codes=[CountryCode('US')], language="en", client_user_id="test-user-123"):
     request = LinkTokenCreateRequest(
         products=[Products('transactions')],
@@ -61,7 +60,7 @@ def create_link_token(client, client_name="Plaid Explorer", country_codes=[Count
         print(f"Network or unexpected error: {e}")
         return None         
 
-
+# Simulates a user completing Plaid Link in sandbox — returns a one-time public token
 def create_sandbox_public_token(client):
     pt_request = SandboxPublicTokenCreateRequest(
         institution_id="ins_109508",
@@ -78,8 +77,7 @@ def create_sandbox_public_token(client):
         print(f"Network or unexpected error: {e}")
         return None         
 
-
-
+# Exchanges a temporary public token for a permanent access token used in all subsequent API calls
 def exchange_public_token(client, public_token):
     exchange_request = ItemPublicTokenExchangeRequest(public_token)
     try:

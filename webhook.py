@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 
+# Flask webhook receiver — listens for incoming Plaid webhook events
 app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    # Parse the JSON payload and extract key fields
     data = request.get_json()
     webhook_type = data["webhook_type"]
     item_id = data["item_id"]

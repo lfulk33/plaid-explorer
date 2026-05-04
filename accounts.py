@@ -2,6 +2,7 @@ import plaid
 from utils import handle_plaid_error
 from plaid.model.accounts_get_request import AccountsGetRequest
 
+# Retrieves all accounts linked to the access token and returns them as a list
 def get_accounts(client, access_token):
     try:
         request = AccountsGetRequest(access_token=access_token)
@@ -15,7 +16,7 @@ def get_accounts(client, access_token):
         print(f"Network or unexpected error: {e}")
         return None         
 
-#get_account_health(accounts): Returns total balance, count by type, and any accounts with zero or negative balance flagged.
+#Returns total balance, count by type, and any accounts with zero or negative balance flagged.
 def get_account_health(accounts):
     total_balance = 0
     count_by_type = {}

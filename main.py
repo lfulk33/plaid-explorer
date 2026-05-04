@@ -1,7 +1,7 @@
 from auth import get_plaid_client, create_link_token, create_sandbox_public_token, exchange_public_token
 from accounts import get_accounts, get_account_health
 from transactions import get_transactions, analyze_transactions
-from utils import format_currency, get_divider, format_date
+from utils import format_currency, get_divider, format_date, save_report
 import time
 
 client = get_plaid_client()
@@ -56,3 +56,6 @@ for category, sum in analyzed['sum_by_cat']:
     x = x + 1
 print(f"Large transactions (over $100): {analyzed['trans_over_100']}")
 print(f"Total spend (30 days): {format_currency(analyzed['total_spend'])}")
+
+filename = save_report(account_health, analyzed)
+print(f"Report saved to {filename}")

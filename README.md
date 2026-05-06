@@ -1,8 +1,7 @@
 # Plaid Explorer
 
 A Python command-line application that connects to the Plaid financial API sandbox 
-to retrieve, analyze, and report on account and transaction data. Built as a learning 
-project to demonstrate real-world API integration patterns including authentication 
+to retrieve, analyze, and report on account and transaction data. Built to demonstrate real-world API integration patterns including authentication 
 flows, data retrieval, error handling, and webhook processing.
 
 ## Prerequisites
